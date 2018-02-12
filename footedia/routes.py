@@ -1,6 +1,7 @@
 from footedia import footedia
 from flask import render_template
 from flask import request
+import os
 import praw
 from prawcore import (Authorizer, DeviceIDAuthorizer, ReadOnlyAuthorizer,
                       Redirect, Requestor, ScriptAuthorizer,
@@ -16,11 +17,13 @@ def index():
 @footedia.route('/playerdetail')
 def playerdetail():
     playername = request.args.get('player')
+    reddit_username = os.getenv('reddit_username_first')
+    reddit_pw = os.getenv('reddit_pw_first')
     reddit = praw.Reddit(client_id='eTSh9ULVWNEcYA',
                          client_secret='9FmmnV1eIkSzgcKMe3EzZDSC7YE',
-                         password='KloppsLFC',
+                         password=reddit_pw,
                          user_agent='sample_user_agent',
-                         username='dlocalchad')
+                         username=reddit_username)
     subreddit = reddit.subreddit('soccer')
     player_submissions = []
     for submission in subreddit.top(limit=200):
